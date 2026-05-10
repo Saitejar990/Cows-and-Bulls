@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cows and Bulls - Multiplayer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <!-- View 1: Home / Lobby -->
+        <div id="lobby-view" class="view active">
+            <h1 class="title">Cows & Bulls</h1>
+            <p class="subtitle">The classic code-breaking mind game</p>
+            
+            <div class="card glass">
+                <div class="input-group">
+                    <label for="room-input">Team Code</label>
+                    <input type="text" id="room-input" placeholder="Enter or create a team code" autocomplete="off" maxlength="10">
+                </div>
+                <button id="join-btn" class="btn primary">Join Game</button>
+                <div id="lobby-message" class="message error hidden"></div>
+            </div>
+            
+            <div id="waiting-message" class="message info hidden">
+                <div class="spinner"></div>
+                <p>Waiting for an opponent to join...</p>
+                <p class="small">Share the team code with a friend!</p>
+            </div>
+        </div>
+
+        <!-- View 2: Set Secret Number -->
+        <div id="setup-view" class="view hidden">
+            <h2 class="section-title">Set Your Secret Number</h2>
+            <div class="card glass">
+                <p class="instruction">Choose a 3-digit number. <strong>All digits must be unique, and it cannot contain a '0'.</strong></p>
+                <div class="input-group">
+                    <input type="text" id="secret-number-input" placeholder="e.g., 385" maxlength="3" autocomplete="off">
+                </div>
+                <button id="set-number-btn" class="btn primary">Lock It In</button>
+                <div id="setup-error" class="message error hidden"></div>
+            </div>
+            <div id="waiting-opponent-setup" class="message info hidden">
+                <div class="spinner"></div>
+                <p>Waiting for opponent to pick their number...</p>
+            </div>
+        </div>
+
+        <!-- View 3: Game Area -->
+        <div id="game-view" class="view hidden">
+            <div class="game-header">
+                <div class="player-badge">You: <span id="player-identity">Player</span></div>
+                <div class="round-badge">Round <span id="round-indicator">1</span>/10</div>
+            </div>
+            
+            <h2 id="turn-indicator" class="turn-indicator my-turn">Your Turn!</h2>
+            
+            <div class="game-layout">
+                <div class="guess-section card glass">
+                    <h3>Make a Guess</h3>
+                    <div class="input-group row">
+                        <input type="text" id="guess-input" placeholder="3 digits" maxlength="3" autocomplete="off">
+                        <button id="guess-btn" class="btn primary">Guess</button>
+                    </div>
+                    <div id="guess-error" class="message error hidden"></div>
+                </div>
+
+                <div class="history-section card glass">
+                    <h3>Your Guesses</h3>
+                    <div class="history-table-container">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Guess</th>
+                                    <th>Cows 🐮</th>
+                                    <th>Bulls 🎯</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body">
+                                <!-- History rows go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 4: Game Over -->
+        <div id="game-over-view" class="view hidden">
+            <div class="card glass game-over-card">
+                <h1 id="game-over-title" class="title">Game Over</h1>
+                <p id="game-over-message" class="subtitle">You Won!</p>
+                
+                <div class="reveal-section">
+                    <p>Opponent's number was:</p>
+                    <div id="opponent-number-reveal" class="number-reveal">???</div>
+                </div>
+                
+                <button id="play-again-btn" class="btn secondary mt-2">Play Again</button>
+                <div id="play-again-waiting" class="message info hidden mt-1">Waiting for opponent to Play Again...</div>
+            </div>
+        </div>
+        
+        <!-- Disconnected Overlay -->
+        <div id="disconnected-overlay" class="overlay hidden">
+            <div class="card glass text-center">
+                <h2>Connection Lost</h2>
+                <p>Opponent disconnected or server error.</p>
+                <button class="btn primary" onclick="location.reload()">Back to Home</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
